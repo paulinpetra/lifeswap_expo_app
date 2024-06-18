@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "../../components/searchInput";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const DATA = [
   {
@@ -30,6 +31,8 @@ const Item = ({ title }) => (
 );
 
 const Home = () => {
+  const { user } = useGlobalContext();
+
   return (
     <ImageBackground
       source={require("../../assets/images/bgpurplerotate.jpeg")}
@@ -47,7 +50,7 @@ const Home = () => {
             <View style={styles.header}>
               <View style={styles.welcomeContainer}>
                 <Text style={styles.welcomeText}>Welcome Back</Text>
-                <Text style={styles.welcomeText}>User</Text>
+                <Text style={styles.welcomeText}>{user.username}</Text>
               </View>
             </View>
           )}
