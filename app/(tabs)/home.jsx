@@ -4,35 +4,29 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "../../components/searchInput";
 import { useGlobalContext } from "../../context/GlobalProvider";
-
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+import { useState } from "react";
+import { getAllLives } from "../../lib/appwrite";
+import useAppwrite from "../../lib/useAppwrite";
+import LifeCards from "../../components/lifeCards";
 
 const Home = () => {
   const { user } = useGlobalContext();
 
+  const { data: lives, refetch } = useAppwrite(getAllLives); //using the custom hook and rename data lives, passing getAllLives as the function
+
+  //refresh scrolling function for the flatlist
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
   return (
     <ImageBackground
       source={require("../../assets/images/bgpurplerotate.jpeg")}
@@ -43,9 +37,18 @@ const Home = () => {
         <SearchInput />
 
         <FlatList
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={(item) => item.id}
+          data={lives}
+          keyExtractor={(item) => item.$id}
+          renderItem={({ item }) => (
+            <LifeCards
+              place={item.place}
+              occupation={item.occupation}
+              freetime={item.freetime}
+              imageUrl={item.imageUrl}
+              creator={item.creator.username}
+              avatar={item.creator.avatar}
+            />
+          )}
           ListHeaderComponent={() => (
             <View style={styles.header}>
               <View style={styles.welcomeContainer}>
@@ -54,6 +57,9 @@ const Home = () => {
               </View>
             </View>
           )}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       </SafeAreaView>
     </ImageBackground>
@@ -72,16 +78,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  //Styles for the flatlist items:
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
+
   //Styles for the List Header Component:
   header: {
     flexDirection: "row",
