@@ -152,7 +152,3 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
 });
-
-//  <Link style={{ color: "#CFFF04", fontSize: 24 }} href="/home">
-//              HOME
-//            </Link>

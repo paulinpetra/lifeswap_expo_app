@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 const LifeCards = ({
   place,
@@ -9,25 +9,32 @@ const LifeCards = ({
   avatar,
 }) => {
   return (
-    <ImageBackground
-      source={{ uri: imageUrl }}
-      resizeMode="cover"
-      style={styles.item}
+    <TouchableOpacity
+      activeOpacity={0.7}
+      //onPress={} go to the profile of the creator
     >
-      <View style={styles.content}>
+      <View style={[styles.lifeCards, styles.elevatedLifeCards]}>
+        <Image
+          source={{ uri: imageUrl }}
+          resizeMode="cover"
+          style={styles.cardImage}
+        />
         <Image
           source={{ uri: avatar }}
           style={styles.avatar}
-          resizeMode="cover"
+          resizeMode="contain"
+          borderRadius={6}
         />
-        <Text style={styles.creator} numberOfLines={1}>
-          {creator}
-        </Text>
-        <Text style={styles.title}>{place}</Text>
-        <Text style={styles.title}>{occupation}</Text>
-        <Text style={styles.title}>{freetime}</Text>
+        <View style={styles.cardBody}>
+          <Text style={styles.creator} numberOfLines={1}>
+            {creator}
+          </Text>
+          <Text style={styles.place}>{place}</Text>
+          <Text style={styles.occupation}>{occupation}</Text>
+          <Text style={styles.freetime}>{freetime}</Text>
+        </View>
       </View>
-    </ImageBackground>
+    </TouchableOpacity>
   );
 };
 
@@ -35,37 +42,60 @@ export default LifeCards;
 
 const styles = StyleSheet.create({
   //Styles for the flatlist items:
+  lifeCards: {
+    width: 360,
+    height: 330,
+    borderRadius: 24,
+    marginVertical: 12,
+    marginHorizontal: 16,
+  },
+  elevatedLifeCards: {
+    backgroundColor: "#ffffff",
+    elevation: 3,
 
-  item: {
-    //background
-    flex: 1,
-    justifyContent: "center",
-    width: 350,
-    height: 250,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25, // shadow opacity for visibility
+    shadowRadius: 15, // shadow radius for softer edges
   },
-  title: {
+
+  cardImage: {
+    height: 220,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  cardBody: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  place: {
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
+    color: "#000066",
+  },
+  occupation: {
+    fontFamily: "Poppins-Regular",
     fontSize: 16,
-    color: "#fff",
-    marginBottom: 5,
-    marginLeft: 5,
+    color: "#333333",
   },
-  content: {
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    paddingRight: 50,
-    paddingBottom: 10,
+  freetime: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 16,
+    color: "#333333",
   },
 
   avatar: {
     width: 40,
     height: 40,
+    borderTopLeftRadius: 24,
+    position: "absolute",
   },
   creator: {
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: 14,
+    color: "#333333",
+    fontFamily: "Poppins-Light",
   },
 });

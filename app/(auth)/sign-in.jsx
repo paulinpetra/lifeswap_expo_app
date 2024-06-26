@@ -104,6 +104,9 @@ const SignIn = () => {
               </View>
             </BlurView>
           </View>
+          <Link style={{ color: "#CFFF04", fontSize: 24 }} href="/home">
+            HOME
+          </Link>
         </ScrollView>
       </SafeAreaView>
     </ImageBackground>

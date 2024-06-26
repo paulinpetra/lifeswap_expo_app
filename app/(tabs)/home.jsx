@@ -6,11 +6,13 @@ import {
   ImageBackground,
   RefreshControl,
 } from "react-native";
+import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "../../components/searchInput";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { useState } from "react";
 import { getAllLives } from "../../lib/appwrite";
+
 import useAppwrite from "../../lib/useAppwrite";
 import LifeCards from "../../components/lifeCards";
 
@@ -35,6 +37,13 @@ const Home = () => {
     >
       <SafeAreaView style={styles.safeAreaContainer}>
         <SearchInput />
+
+        <Link style={{ color: "#CFFF04", fontSize: 24 }} href="/sign-up">
+          SIGN-UP
+        </Link>
+        <Link style={{ color: "#CFFF04", fontSize: 24 }} href="/sign-in">
+          SIGN-IN
+        </Link>
 
         <FlatList
           data={lives}
@@ -74,9 +83,9 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
+    //justifyContent: "center",
+    //width: "100%",
+    //height: "100%",
   },
 
   //Styles for the List Header Component:

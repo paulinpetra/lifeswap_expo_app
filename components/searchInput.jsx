@@ -1,17 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useState } from "react";
+import { router, usePathname } from "expo-router";
 
-const SearchInput = ({}) => {
+const SearchInput = ({ initialQuery }) => {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
+  const pathname = usePathname();
+  const [query, setQuery] = useState(initialQuery || "");
+
   return (
     <View
       style={[
@@ -33,9 +30,23 @@ const SearchInput = ({}) => {
         onFocus={handleFocus}
         placeholder="Search..."
         placeholderTextColor="#999"
+        value={query}
+        onChangeText={(e) => setQuery(e)}
       />
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          if (query === "")
+            return Alert.alert(
+              "Missing Query",
+              "Please write something to search for results in the database"
+            );
+
+          if (pathname.startsWith("/search"))
+            router.setParams({ query }); //if already on search page
+          else router.push(`/search/${query}`);
+        }}
+      >
         <FontAwesome5 size={20} name="search" style={styles.logoIcon} />
       </TouchableOpacity>
     </View>
