@@ -20,7 +20,7 @@ const Search = () => {
 
   const { query } = useLocalSearchParams();
 
-  const { data: lives, refetch } = useAppwrite(searchPosts(query)); //using the custom hook and rename data lives, passing searchPost function from appwrite.js and the query
+  const { data: lives, refetch } = useAppwrite(() => searchPosts(query)); //passing the entire function to the custom hook
 
   //refetch when the user types in a new search query
   useEffect(() => {

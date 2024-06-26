@@ -28,7 +28,7 @@ const SearchInput = ({ initialQuery }) => {
       <TextInput
         style={styles.input}
         onFocus={handleFocus}
-        placeholder="Search..."
+        placeholder="Search places"
         placeholderTextColor="#999"
         value={query}
         onChangeText={(e) => setQuery(e)}
